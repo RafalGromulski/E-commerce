@@ -1,5 +1,4 @@
 from django.urls import path
-# from rest_framework import routers
 
 from .views import (
     UserView,
@@ -13,26 +12,20 @@ from .views import (
     OrderView,
 )
 
-# router = routers.DefaultRouter()
-# router.register(r"users", UserViewSet)
-# router.register(r"groups", GroupViewSet)
-# router.register(r"categories", CategoryViewSet)
-# router.register(r"products", ProductViewSet)
-# router.register(r"orders", OrderViewSet)
-
-
 urlpatterns = [
-    # path("", include(router.urls)),  # do weryfikacji
-    path("users/", UserView.as_view()),
-    path("groups/", GroupView.as_view()),
-    path("categories/", CategoryView.as_view()),
-    path("orders/", OrderView.as_view()),
-    # path("orders/<int:pk>/", xxxx.as_view()),
-    path("products/", ProductView.as_view()),
-    path("products/<int:pk>/", ProductDetailView.as_view()),
-    path("products/<int:pk>/create/", ProductCreateView.as_view()),
-    path("products/<int:pk>/update/", ProductUpdateView.as_view()),
-    path("products/<int:pk>/delete/", ProductDestroyView.as_view()),
+    path("users/", UserView.as_view(), name="user-list"),
+    path("groups/", GroupView.as_view(), name="group-list"),
+    path("categories/", CategoryView.as_view(), name="category-list"),
+    path("orders/", OrderView.as_view(), name="order-list"),
+    path("products/", ProductView.as_view(), name="product-list"),
+    path("products/<int:pk>/", ProductDetailView.as_view(), name="product-retrieve"),
+    path(
+        "products/<int:pk>/create/", ProductCreateView.as_view(), name="product-create"
+    ),
+    path(
+        "products/<int:pk>/update/", ProductUpdateView.as_view(), name="product-update"
+    ),
+    path(
+        "products/<int:pk>/delete/", ProductDestroyView.as_view(), name="product-delete"
+    ),
 ]
-
-# urlpatterns += router.urls

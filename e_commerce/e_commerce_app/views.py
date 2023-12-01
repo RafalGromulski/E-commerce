@@ -1,11 +1,9 @@
-# from django.views.generic import TemplateView
-# from rest_framework import authentication
 from django.contrib.auth.models import Group, User
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics, permissions, viewsets
+from rest_framework import filters, generics, permissions
 
 from .models import CategoryOfProduct, Product, Order
-from .permissions import IsStaffEditorPermissions, IsActiveEditorPermissions
+from .permissions_mixins import StaffEditorPermissions, ActiveEditorPermissions
 from .serializer import (
     UserSerializer,
     GroupSerializer,
@@ -30,7 +28,6 @@ class GroupView(generics.ListAPIView):
 class CategoryView(generics.ListAPIView):
     queryset = CategoryOfProduct.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.AllowAny]
 
 
 class ProductView(generics.ListAPIView):
@@ -39,37 +36,31 @@ class ProductView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ["name", "category", "description", "price"]
     ordering_fields = ["name", "category", "price"]
-    permission_classes = [permissions.AllowAny]
 
 
 class ProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = "pk"
-    permission_classes = [permissions.AllowAny]
 
 
-class ProductCreateView(generics.ListCreateAPIView):
+class ProductCreateView(StaffEditorPermissions, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermissions]
 
 
-class ProductUpdateView(generics.RetrieveUpdateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    lookup_field = "pk"
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermissions]
-
-
-class ProductDestroyView(generics.RetrieveDestroyAPIView):
+class ProductUpdateView(StaffEditorPermissions, generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = "pk"
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermissions]
 
 
-class OrderView(generics.ListCreateAPIView):  # CreateAPIView
+class ProductDestroyView(StaffEditorPermissions, generics.RetrieveDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = "pk"
+
+
+class OrderView(ActiveEditorPermissions, generics.CreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAdminUser, IsActiveEditorPermissions]

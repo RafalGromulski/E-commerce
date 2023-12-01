@@ -1,17 +1,17 @@
 from django.db.models import Q
 from django_filters import FilterSet, CharFilter
 
-from .models import Produkt
+from .models import Product
 
 
 class ProductsFilter(FilterSet):
-    nazwa = CharFilter(label="Nazwa...", method="nazwa_lookup_method")
-    kategoria = CharFilter(label="Kategoria...", method="kategoria_lookup_method")
-    opis = CharFilter(label="Opis...", method="opis_lookup_method")
-    cena = CharFilter(label="Cena...", method="cena_lookup_method")
+    name = CharFilter(label="Nazwa...", method="nazwa_lookup_method")
+    category = CharFilter(label="Kategoria...", method="kategoria_lookup_method")
+    description = CharFilter(label="Opis...", method="opis_lookup_method")
+    price = CharFilter(label="Cena...", method="cena_lookup_method")
 
     class Meta:
-        model = Produkt
+        model = Product
         fields = []
 
     @classmethod

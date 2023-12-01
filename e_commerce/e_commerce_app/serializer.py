@@ -28,15 +28,38 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    # category = serializers.StringRelatedField(many=False)
+    url_retrieve = serializers.HyperlinkedIdentityField(
+        view_name="product-retrieve", lookup_field="pk"
+    )
+    url_create = serializers.HyperlinkedIdentityField(
+        view_name="product-create", lookup_field="pk"
+    )
+    url_update = serializers.HyperlinkedIdentityField(
+        view_name="product-update", lookup_field="pk"
+    )
+    url_delete = serializers.HyperlinkedIdentityField(
+        view_name="product-delete", lookup_field="pk"
+    )
+    category = serializers.StringRelatedField(many=False)
 
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = [
+            "id",
+            "url_retrieve",
+            "url_create",
+            "url_update",
+            "url_delete",
+            "name",
+            "description",
+            "price",
+            "category",
+            "picture",
+        ]
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    customer = serializers.StringRelatedField(many=False)  # do wyjaśnienia - do wyboru wszyscy użytkownicy
+    customer = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Order
