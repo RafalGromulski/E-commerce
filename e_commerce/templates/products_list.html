@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %} Aplikacja e-commerce - produkty {% endblock %}
+{% block page_content %}
+<div class="container-fluid">
+    <div class="jumbotron">
+        <h5 class="display-6 text-center mt-4 mb-5">Wszystkie produkty</h5>
+        <hr class="my-4">
+    </div>
+      <form method="GET" action=".">
+        <div class="form-row my-3">
+<!--            {% bootstrap_form my_filter.form show_label=skip layout="inline" %}-->
+            <div class="form-group col-12">
+                <div class="input-group">
+                    <input class="form-control py-2 my-3 border-right-0 border" type="search" name="my_filter" placeholder="Nazwa..." />
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Search</button>
+      </form>
+    <div class="table-responsive-sm mt-3">
+        <table id="products" class="table table-bordered table-sm table-hover text-center table-light" border="1" style="max-width: 100%">
+            <thead class="table-primary">
+            <tr>
+                <th class="th-sm align-middle" scope="col">Id</th>
+                <th class="th-sm align-middle" scope="col">Nazwa</th>
+                <th class="th-sm align-middle" scope="col">Opis</th>
+                <th class="th-sm align-middle" scope="col">Cena</th>
+                <th class="th-sm align-middle" scope="col">Kategoria</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+            <tr>
+                <td class="align-middle">
+                    {{ product.id }}
+                </td>
+                <td class="align-middle">
+                    <a href="{% url 'product_details' product.id %}" aria-pressed="true">{{ product.nazwa }}</a>
+                </td>
+                <td class="align-middle">
+                    {{ product.opis }}
+                </td>
+                <td class="align-middle">
+                    {{ product.cena }}
+                </td>
+                <td class="align-middle">
+                    {{ product.kategoria }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
